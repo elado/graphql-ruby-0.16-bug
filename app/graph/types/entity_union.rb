@@ -9,6 +9,6 @@ EntityUnion = GraphQL::UnionType.define do
   possible_types ENTITY_TYPES.values
 
   resolve_type ->(object, ctx) {
-    ENTITY_TYPES[object.entity_type.to_sym] || ENTITY_TYPES[:default]
+    ENTITY_TYPES[object.entity_type.to_sym]
   }
 end
