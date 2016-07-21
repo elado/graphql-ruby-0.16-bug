@@ -1,4 +1,4 @@
-# graphql-ruby-0.16-bug
+# graphql-ruby-issues
 
 Clone and run:
 
@@ -11,55 +11,9 @@ rails s -p3001
 
 Go to [http://localhost:3001/graphiql](http://localhost:3001/graphiql)
 
-## Bug:
+## Query:
 
-
-```
-query first {
-  viewer {
-    collections {
-      edges {
-        node {
-          id
-          name
-          items(first: 100) {
-            edges {
-              node {
-                id
-                entity {
-                  __typename
-                  ...F1
-                  ...F2
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-fragment F1 on EntityAaa {
-  id
-  name
-  aaa
-  entityType
-  __typename
-}
-
-fragment F2 on EntityBbb {
-  id
-  name
-  bbb
-  entityType
-  __typename
-}
-```
-
-## No bug:
-
-```
+```graphql
 query {
   viewer {
     collections {
@@ -67,26 +21,12 @@ query {
         node {
           id
           name
-          items(first: 100) {
+          items {
             edges {
               node {
                 id
                 entity {
-                  __typename
-                  ... on EntityAaa {
-                    id
-                    name
-                    aaa
-                    entityType
-                    __typename
-                  }
-                  ... on EntityBbb {
-                    id
-                    name
-                    bbb
-                    entityType
-                    __typename
-                  }
+                  id # this field is supposed to be on the interface
                 }
               }
             }
@@ -96,4 +36,10 @@ query {
     }
   }
 }
+```
+
+## Error:
+
+```
+GraphQL::ObjectType::UnresolvedTypeError (The value returned for field entity on CollectionItem could not be resolved to one of the possible types for EntityInterface.):
 ```

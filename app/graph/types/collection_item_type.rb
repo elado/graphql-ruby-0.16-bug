@@ -6,7 +6,7 @@ CollectionItemType = GraphQL::ObjectType.define do
   global_id_field :id
 
   field :entity do
-    type EntityUnion
+    type EntityInterface
     resolve -> (obj, args, ctx) { obj.entity }
   end
 end
